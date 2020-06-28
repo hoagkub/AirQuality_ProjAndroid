@@ -56,6 +56,12 @@ public class CurrentAirQualityFragment extends Fragment {
 
     static CurrentAirQualityFragment instance;
 
+    /**
+     * This is just to make sure the CurrentAirQualityFragment is not null
+     * when it is created.
+     *
+     * @return - the instance of the CurrentAirQualityFragment
+     */
     public static CurrentAirQualityFragment getInstance() {
         if (instance == null) {
             instance = new CurrentAirQualityFragment();
@@ -148,6 +154,9 @@ public class CurrentAirQualityFragment extends Fragment {
         return itemView;
     }
 
+    /**
+     * This method gets the current data from firebase
+     */
     private void getCurrentAirQualityData() {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference cityLocation = database.getReference("Location1");
@@ -171,6 +180,12 @@ public class CurrentAirQualityFragment extends Fragment {
         });
     }
 
+    /**
+     * This function loads in the current air quality information based on the
+     * data got from firebase. Only if API level is 26 or higher
+     *
+     * @param cityData - that contains information from firebase
+     */
     @TargetApi(26)
     private void loadCurrentDataTargetApi26(CityData cityData) {
           cityName.setText(cityData.getCityName());
@@ -217,6 +232,12 @@ public class CurrentAirQualityFragment extends Fragment {
         currentProgressBar.setVisibility(View.GONE);
     }
 
+    /**
+     * This method converts a ISO-8601 timestamp to a readable date.
+     *
+     * @param timestamp - a String of ISO-8601 compliant timestamp
+     * @return - a String of the formatted date in words
+     */
     @TargetApi(26)
     private String decodeTimestamp(String timestamp) {
         DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.ENGLISH);
@@ -226,6 +247,12 @@ public class CurrentAirQualityFragment extends Fragment {
         return formattedDate;
     }
 
+    /**
+     * This method checks if the user is connected to the internet.
+     *
+     * @return - true, if the user is connected.
+     * false, if the user is not connected.
+     */
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -233,6 +260,12 @@ public class CurrentAirQualityFragment extends Fragment {
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
+    /**
+     * This method converts a numerical AQI value to its severity ranking in words
+     *
+     * @param aqius - This is the air quality index by U.S. EPA standards
+     * @return the rank of the air quality index, a String
+     */
     private String rankAQIUS(int aqius) {
         if (aqius >= 0 && aqius <= 50) {
             return "Good";
