@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">AirQuality_ProjAndroid</string>
+    <string name="aqi_rating">AQI Rating</string>
+    <string name="city_name">City</string>
+    <string name="aqi">AQI</string>
+    <string name="time_stamp">2018-10-15T01:00:00.000Z</string>
+</resources>
