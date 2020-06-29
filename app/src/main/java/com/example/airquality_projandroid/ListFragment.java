@@ -3,6 +3,7 @@ package com.example.airquality_projandroid;
 import android.app.AlertDialog;
 import android.app.SearchManager;
 import android.content.Context;
+import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
@@ -54,6 +55,7 @@ public class ListFragment extends Fragment implements ListAdapter.OnItemClickLis
     ArrayList<String> spinnerList;
     ListAdapter listAdapter;
     Toolbar toolbar;
+    DatabaseHelper databaseHelper;
     private ArrayList<CityData> cityList;
     private SearchView searchView = null;
     private SearchView.OnQueryTextListener queryTextListener;
@@ -82,7 +84,7 @@ public class ListFragment extends Fragment implements ListAdapter.OnItemClickLis
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         setRetainInstance(true);
-//        databaseHelper = new DatabaseHelper(getActivity());
+        databaseHelper = new DatabaseHelper(getActivity());
 
         //Check if user is connected to the internet
         //If the user is connected, don't show it
@@ -155,7 +157,8 @@ public class ListFragment extends Fragment implements ListAdapter.OnItemClickLis
     @Override
     public void onStart() {
         super.onStart();
-//        loadSelectedDataToRecyclerView("Hanoi, Vietnam");
+        cityList.clear();
+        loadDataFromSQLiteDatabase();
     }
 
     @Override
@@ -223,41 +226,6 @@ public class ListFragment extends Fragment implements ListAdapter.OnItemClickLis
      * and adds it to the RecyclerView list
      */
     private void loadSelectedDataToRecyclerView(String selectedStation) {
-//        RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
-//        //Request a string response from the provided URL, create a new StringRequest object
-//        /*
-//         * @param response - This is the response (JSON file) from the API
-//         *
-//         * This is what will happen when there is an error during the response
-//         * @param error - This is the error that Volley encountered
-//         */
-//        StringRequest stringRequest = new StringRequest(Request.Method.GET, generateRequestURL(selectedStation),
-//                response -> {
-//                    //Using Gson to turn JSON to Java object of Station
-//                    //Create new GsonBuilder and Gson objects
-//                    GsonBuilder gsonBuilder = new GsonBuilder();
-//                    Gson gson = gsonBuilder.create();
-//                    //Create a new Station object and use Gson to deserialize JSON data
-//                    //into the Station object
-//                    Station station = gson.fromJson(response, Station.class);
-//                    //Add the new Station object to the ArrayList of Station objects
-//                    //This is to create another entry in the RecyclerView
-//                    //Tell the RecyclerView listAdapter that our data is updated
-//                    //because Station was just to the ArrayList
-//                    stationList.add(station);
-//                    listAdapter.notifyDataSetChanged();
-//                    //Add the new Station object to Firebase
-//                    //uploadDataToFirebase(station);
-//                    //Add the new Station object to SQLite database
-//                    addData(response);
-//                    //Write the API response data to the log console
-//                    Log.d(TAG, "API RESPONSE: " + response);
-//                }, error -> {
-//            //Write the error from Volley to the log console
-//            Log.d(TAG, "VOLLEY ERROR: " + error.toString());
-//        });
-//        //Add the request to the RequestQueue
-//        requestQueue.add(stringRequest);
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference cityLocation = database.getReference(selectedStation);
 
@@ -268,15 +236,14 @@ public class ListFragment extends Fragment implements ListAdapter.OnItemClickLis
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
                 CityData value = dataSnapshot.getValue(CityData.class);
-                Log.d("Test", "Success");
                 cityList.add(value);
                 listAdapter.notifyDataSetChanged();
+                addData(value);
             }
 
             @Override
             public void onCancelled(DatabaseError error) {
                 // Failed to read value
-                Log.w("Test", "Failed to read value.", error.toException());
             }
         });
     }
@@ -358,5 +325,23 @@ public class ListFragment extends Fragment implements ListAdapter.OnItemClickLis
                 return 0;
             }
         });
+    }
+
+    public void addData(CityData data) {
+        databaseHelper = new DatabaseHelper(getActivity());
+        databaseHelper.saveCityRecord(data);
+    }
+
+    /**
+     * This function loads a CityData object's data from the SQLITE database
+     */
+    private void loadDataFromSQLiteDatabase() {
+        Cursor data = databaseHelper.getData();
+        while (data.moveToNext()) {
+            String cityName = data.getString(0);
+            int cityAQI = data.getInt(1);
+            String cityTimeStamp = data.getString(2);
+            cityList.add(new CityData(cityName, cityAQI, cityTimeStamp));
+        }
     }
 }
