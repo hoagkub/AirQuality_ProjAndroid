@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/item_sort"
+        android:icon="@drawable/ic_sort_black_24dp"
+        android:title="Sort"
+        app:showAsAction="always">
+
+        <menu>
+            <item android:id="@+id/sort_best_aqi"
+                android:title="Sort by best AQI"/>
+            <item android:id="@+id/sort_worst_aqi"
+                android:title="Sort by worst AQI"/>
+        </menu>
+</item>
+
+    <item android:id="@+id/item_search"
+        android:icon="@drawable/ic_search_black_24dp"
+        android:title="Search"
+        app:showAsAction="always"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"/>
+
+    <item android:id="@+id/item_add"
+        android:icon="@drawable/ic_add_black_24dp"
+        android:title="Add"
+        app:showAsAction="always" />
+</menu>

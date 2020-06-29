@@ -159,7 +159,7 @@ public class CurrentAirQualityFragment extends Fragment {
      */
     private void getCurrentAirQualityData() {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference cityLocation = database.getReference("Location1");
+        DatabaseReference cityLocation = database.getReference("Ho Chi Minh City, Vietnam");
 
         // Read from the database
         cityLocation.addValueEventListener(new ValueEventListener() {
@@ -188,10 +188,10 @@ public class CurrentAirQualityFragment extends Fragment {
      */
     @TargetApi(26)
     private void loadCurrentDataTargetApi26(CityData cityData) {
-          cityName.setText(cityData.getCityName());
-          cityTimeStamp.setText(decodeTimestamp(cityData.getCityTimeStamp()));
-          cityAQI.setText("" + cityData.getCityAQI());
-          cityAQIRating.setText(rankAQIUS(cityData.getCityAQI()));
+        cityName.setText(cityData.getCityName());
+        cityTimeStamp.setText(decodeTimestamp(cityData.getCityTimeStamp()));
+        cityAQI.setText("" + cityData.getCityAQI());
+        cityAQIRating.setText(rankAQIUS(cityData.getCityAQI()));
 
         int hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
 

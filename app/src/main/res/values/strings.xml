@@ -4,4 +4,5 @@
     <string name="city_name">City</string>
     <string name="aqi">AQI</string>
     <string name="time_stamp">2018-10-15T01:00:00.000Z</string>
+    <string name="delete">Delete</string>
 </resources>

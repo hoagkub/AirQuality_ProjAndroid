@@ -5,4 +5,13 @@
     <color name="colorAccent">#03DAC5</color>
     <color name="white">#ffffff</color>
     <color name="colorPrimaryLight">#80d6ff</color>
+    <color name="colorError">#263238</color>
+    <color name="bg_row_background">#fa315b</color>
+
+    <color name="aqius_good">#4caf50</color>
+    <color name="aqius_moderate">#ffeb3b</color>
+    <color name="aqius_unhealthyforsensitivegroups">#ff9800</color>
+    <color name="aqius_unhealthy">#f44336</color>
+    <color name="aqius_veryunhealthy">#9c27b0</color>
+    <color name="aqius_hazardous">#880e4f</color>
 </resources>

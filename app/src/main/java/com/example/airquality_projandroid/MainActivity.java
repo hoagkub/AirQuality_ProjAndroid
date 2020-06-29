@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
 
         fragments = new Fragment[2];
         fragments[0] = new CurrentAirQualityFragment();
-//        fragments[1] = new ListFragment();
+        fragments[1] = new ListFragment();
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(navListener);
@@ -42,8 +42,8 @@ public class MainActivity extends AppCompatActivity {
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
                     break;
                 case R.id.nav_list:
-//                    selectedFragment = fragments[1];
-//                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
+                    selectedFragment = fragments[1];
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
                     break;
             }
             return true;
