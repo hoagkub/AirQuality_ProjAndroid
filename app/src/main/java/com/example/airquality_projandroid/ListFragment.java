@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -37,8 +38,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.database.annotations.NotNull;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 import in.galaxyofandroid.spinerdialog.SpinnerDialog;
 
@@ -130,7 +134,7 @@ public class ListFragment extends Fragment implements ListAdapter.OnItemClickLis
 
         pullToRefresh.setOnRefreshListener(() -> {
             Toast.makeText(getContext(), "Refreshed", Toast.LENGTH_SHORT).show();
-//            reloadAirQualityData();
+            reloadAirQualityData();
             pullToRefresh.setRefreshing(false);
         });
 
@@ -343,5 +347,19 @@ public class ListFragment extends Fragment implements ListAdapter.OnItemClickLis
             String cityTimeStamp = data.getString(2);
             cityList.add(new CityData(cityName, cityAQI, cityTimeStamp));
         }
+    }
+
+    private void reloadAirQualityData() {
+        for (int i = 0; i < cityList.size(); i++) {
+            CityData cityData = cityList.get(i);
+            String cityName = cityData.getCityName();
+
+            listAdapter.removeItem(i);
+
+            Handler handler = new Handler();
+            handler.postDelayed(() -> loadSelectedDataToRecyclerView(cityName), 1000);
+            //Remove the item from RecyclerView
+        }
+        listAdapter.notifyDataSetChanged();
     }
 }

@@ -157,4 +157,14 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
         cityDataArrayList = filteredList;
         notifyDataSetChanged();
     }
+
+    public void removeItem(int position) {
+        CityData cityData = cityDataArrayList.get(position);
+        DatabaseHelper dbHelper = new DatabaseHelper(context);
+        dbHelper.deleteCityRecord(cityData.getCityName(), context);
+        cityDataArrayList.remove(position);
+        // notify item added by position
+        notifyItemRemoved(position);
+        //notifyItemRangeChanged(position, stationList.size());
+    }
 }

@@ -159,7 +159,7 @@ public class CurrentAirQualityFragment extends Fragment {
      */
     private void getCurrentAirQualityData() {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference cityLocation = database.getReference("Ho Chi Minh City, Vietnam");
+        DatabaseReference cityLocation = database.getReference("Ho Chi Minh City");
 
         // Read from the database
         cityLocation.addValueEventListener(new ValueEventListener() {
